@@ -1,0 +1,43 @@
+<div class="container sub-navbar">
+    <ul class="row">
+        <a href="#"><li class="col-xs-6 active">タイムライン</li></a>
+        <a href="#"><li class="col-xs-6">ピックリスト</li></a>
+    </ul>
+</div>
+<div id="content-body">
+    <div class="container">
+        <ul class="row" id="articles">
+            <li class="col-sm-6 col-md-4" ng-repeat="article in articles">
+                <a href="/#/articles/{{ article.id }}">
+                    <div class="article">
+                        <div>
+                            <div class="article-thumbnail" style="background-image: url(http://www.famitsu.com/images/000/052/455/t_535cb4992cf67.jpg)"></div>
+                            <div class="article-title">{{ article.title }}</div>
+                        <div class="article-spec">
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <div class="article-source">{{ article.source }}</div>
+                                    <div class="article-pubdate">{{ article.pubdate }}</div>
+                                    <div class="article-people">
+                                        <img src="http://graph.facebook.com/naoya.ishimura/picture"><img src="http://graph.facebook.com/naoya.ishimura/picture"><img src="http://graph.facebook.com/naoya.ishimura/picture">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <a data-animation="am-fade-and-scale" data-placement="center" bs-modal="modal" ng-click="pick()">
+                                        <div class="article-pick">
+                                            <div><i class="fa fa-thumb-tack"></i></div>
+                                            <div><span>PICK</span></div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="article-comment">
+                                いまはまだアプリのチューニングなのでなんたらかんたら
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

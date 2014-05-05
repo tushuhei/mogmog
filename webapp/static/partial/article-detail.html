@@ -1,0 +1,13 @@
+<div id="content-body">
+    <div class="container" id="article-detail">
+        <div class="article-spec">
+            <h2 class="article-title">{{ article.title }}</h2>
+            <div class="article-source">{{ article.source }}</div>
+            <div class="article-pubdate">{{ article.pubdate }}</div>
+            <p>{{ article.description }}</p>
+            <div class="readmore">
+                <a class="btn btn-primary" href="/preview?article_id={{ article.id }}">続きを読む</a>
+            </div>
+        </div>
+    </div>
+</div>
