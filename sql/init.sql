@@ -29,19 +29,12 @@ CREATE TABLE `article` (
   `source` varchar(255) DEFAULT NULL,
   `pubdate` datetime DEFAULT NULL,
   `thumbnail` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
   `updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `url` (`url`)
+) ENGINE=MyISAM AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `article`
---
-
-LOCK TABLES `article` WRITE;
-/*!40000 ALTER TABLE `article` DISABLE KEYS */;
-/*!40000 ALTER TABLE `article` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `comment`
@@ -59,15 +52,6 @@ CREATE TABLE `comment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comment`
---
-
-LOCK TABLES `comment` WRITE;
-/*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `comment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `follow`
 --
 
@@ -80,15 +64,6 @@ CREATE TABLE `follow` (
   PRIMARY KEY (`from_user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `follow`
---
-
-LOCK TABLES `follow` WRITE;
-/*!40000 ALTER TABLE `follow` DISABLE KEYS */;
-/*!40000 ALTER TABLE `follow` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `like`
@@ -106,15 +81,6 @@ CREATE TABLE `like` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `like`
---
-
-LOCK TABLES `like` WRITE;
-/*!40000 ALTER TABLE `like` DISABLE KEYS */;
-/*!40000 ALTER TABLE `like` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `user`
 --
 
@@ -123,22 +89,14 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `facebook_id` varchar(255) DEFAULT NULL,
+  `fb_id` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `thumbnail` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -149,4 +107,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-27 13:26:48
+-- Dump completed on 2014-05-05 11:29:36
