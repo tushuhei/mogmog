@@ -2,9 +2,10 @@
 
 var mogmogControllers = angular.module('mogmogControllers', []);
 
-mogmogControllers.controller('BaseCtrl', ['$scope', 'Facebook',
-    function($scope, Facebook) {
+mogmogControllers.controller('BaseCtrl', ['$scope', '$http', 'Facebook',
+    function($scope, $http, Facebook) {
         $scope.fbuser = {};
+        $scope.picked = [];
         $scope.$watch(function() {
             return Facebook.isReady();
         }, function(newVal) {
@@ -20,7 +21,7 @@ mogmogControllers.controller('BaseCtrl', ['$scope', 'Facebook',
         $scope.login = function() {
             Facebook.login(function(response) {
                 if (response.status == 'connected') {
-                    $route.reload();
+                    location.href = "/";
                 }
             });
         };
@@ -29,8 +30,16 @@ mogmogControllers.controller('BaseCtrl', ['$scope', 'Facebook',
             Facebook.api('/me', function(response) {
                 $scope.$apply(function() {
                     $scope.fbuser = response;
+                    $http({
+                        url: '/api/pick',
+                        method: 'GET',
+                        params: {
+                            "user_id": $scope.fbuser.id
+                        }
+                    }).success(function(data) {
+                        $scope.picked = data.res;
+                    });
                 });
-
             });
         };
     }
@@ -40,11 +49,13 @@ mogmogControllers.controller('ArticleListCtrl', ['$scope', '$http', '$modal', '$
     function($scope, $http, $modal, $controller) {
         $controller('BaseCtrl', {$scope: $scope});
 
-        $http.get('/api/latest').success(function(data) {
+        $http({
+            url: '/api/latest',
+            method: 'GET',
+        }).success(function(data) {
             $scope.articles = data.res;
         });
 
-        $scope.picked = [];
 
         $scope.pick = function(article) {
             if (!$scope.fbuser.id) {
@@ -54,17 +65,26 @@ mogmogControllers.controller('ArticleListCtrl', ['$scope', '$http', '$modal', '$
                     scope: $scope
                 });
             }
-            if (!article.picked) {
-                article.picked = true;
-                $scope.picked.push(article);
+            if ($scope.picked.indexOf(article.id) == -1) {
+                $http({
+                    url: '/api/pick',
+                    method: 'POST',
+                    params: {
+                        'article_id': article.id,
+                        'user_id': $scope.fbuser.id
+                    },
+                }).success(function(data) {
+                    $scope.picked.push(article.id);
+                });
             }
         };
 
     }]
 );
 
-mogmogControllers.controller('ArticleDetailCtrl', ['$scope', '$routeParams', '$http',
-    function($scope, $routeParams, $http) {
+mogmogControllers.controller('ArticleDetailCtrl', ['$scope', '$routeParams', '$http', '$controller',
+    function($scope, $routeParams, $http, $controller) {
+        $controller('BaseCtrl', {$scope: $scope});
         $http.get('/api/article?article_id=' + $routeParams.articleId).success(function(data) {
             $scope.article = data.res;
         });

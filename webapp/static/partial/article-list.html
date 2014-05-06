@@ -25,15 +25,9 @@
                                 </div>
                                 <div class="col-xs-3">
                                     <a data-animation="am-fade-and-scale" data-placement="center" bs-modal="modal" ng-click="pick(article)">
-                                        <div class="article-pick" ng-switch on ="article.picked">
-                                            <div ng-switch-when="true" class="true">
-                                                <i class="fa fa-thumb-tack fa-rotate-270"></i>
-                                                <div><span>PICK</span></div>
-                                            </div>
-                                            <div ng-switch-default class="false">
-                                                <i class="fa fa-thumb-tack"></i>
-                                                <div><span>PICK</span></div>
-                                            </div>
+                                        <div ng-class="{'pick_on': (picked.indexOf(article.id) > -1)}" class="article-pick">
+                                            <i class="fa fa-thumb-tack"></i>
+                                            <div><span class="mog">mog!</span></div>
                                         </div>
                                     </a>
                                 </div>

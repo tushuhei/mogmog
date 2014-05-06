@@ -2,14 +2,18 @@
 @background-body: #eee;
 @background-content: #ccc;
 @navbar-default-link-color: #fff;
-@navbar-default-link-hover-color:          #fff;
-@navbar-default-link-active-color:         #fff;
-@navbar-default-link-disabled-color:       #ccc;
-@maincolor:                #18284f;
-@navbar-default-bg:                @maincolor;
-@brand-info:            #45629e;
+@navbar-default-link-hover-color: #fff;
+@navbar-default-link-active-color: #fff;
+@navbar-default-link-disabled-color: #ccc;
+@maincolor: #18284f;
+@accentcolor: #24ad1d;
+@navbar-default-bg: @maincolor;
+@brand-info: #45629e;
 body {
     background-color: @background-body;
+}
+.mog {
+    font-family: 'Montserrat', sans-serif;
 }
 #global-navbar {
     position: relative;
@@ -112,21 +116,33 @@ body {
         width: 40px;
     }
     .article-pick {
-       cursor: pointer;
-       margin: 10px auto 0 auto;
-       padding: 3px 0;
-       text-align: center;
-       width: 40px; 
-       height: 40px;
-       color: #fff;
-       border-radius: 3px;
-       background-color: @navbar-default-bg;
-       i {
-           font-size: 18px;
-       }
-       span {
-           font-size: 10px;
-       }
+        color: #fff;
+        margin: 10px auto 0 auto;
+        cursor: pointer;
+        text-align: center;
+        padding: 3px 0;
+        border-radius: 3px;
+        width: 40px; 
+        height: 40px;
+        background-color: @maincolor;
+        i {
+            font-size: 18px;
+        }
+        span {
+            font-size: 10px;
+        }
+    }
+    .pick_on {
+        background-color: @accentcolor;
+        i {
+            -moz-transform: rotate(-90deg);
+            -webkit-transform: rotate(-90deg);
+            -o-transform: rotate(-90deg);
+            -ms-transform: rotate(-90deg);
+        }
+    }
+    .article-pick:hover {
+        opacity: .9;
     }
     .article-comment {
         background-color: #eee;

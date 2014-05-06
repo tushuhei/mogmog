@@ -83,7 +83,30 @@ def article():
     if len(data) == 0: return jsonfy({"res":{}})
     return jsonify({"res": data[0]})
 
-
+@app.route("/api/pick", methods=['GET', 'POST'])
+def pick():
+    cur = connect_db()
+    if request.method == 'POST':
+        article_id = request.args.get('article_id', None)
+        user_id = request.args.get('user_id', None)
+        cur.execute("""
+        INSERT IGNORE INTO pick
+        (article_id, user_id)
+        VALUES (%s, %s)
+        """, [article_id, user_id])
+        return jsonify({"res": "ok"})
+    else:
+        user_id = request.args.get('user_id', None)
+        cur.execute("""
+        SELECT 
+        id
+        FROM article a
+        LEFT JOIN pick p
+        ON a.id=p.article_id
+        WHERE p.user_id=%s;
+        """, [user_id])
+        data = [x["id"] for x in cur.fetchall()]
+        return jsonify({"res": data})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug = True, port=80)
