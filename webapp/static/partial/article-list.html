@@ -1,7 +1,8 @@
+<ng-include src="'/static/partial/navbar.html'"></ng-include>
 <div class="container sub-navbar">
     <ul class="row">
         <a href="#"><li class="col-xs-6 active">タイムライン</li></a>
-        <a href="#"><li class="col-xs-6">ピックリスト</li></a>
+        <a href="#"><li class="col-xs-6">ピックリスト ({{ picked.length }})</li></a>
     </ul>
 </div>
 <div id="content-body">
@@ -11,7 +12,7 @@
                 <a href="/#/articles/{{ article.id }}">
                     <div class="article">
                         <div>
-                            <div class="article-thumbnail" style="background-image: url(http://www.famitsu.com/images/000/052/455/t_535cb4992cf67.jpg)"></div>
+                            <div class="article-thumbnail" style="background-image: url({{ article.thumbnail }})"></div>
                             <div class="article-title">{{ article.title }}</div>
                         <div class="article-spec">
                             <div class="row">
@@ -23,10 +24,16 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
-                                    <a data-animation="am-fade-and-scale" data-placement="center" bs-modal="modal" ng-click="pick()">
-                                        <div class="article-pick">
-                                            <div><i class="fa fa-thumb-tack"></i></div>
-                                            <div><span>PICK</span></div>
+                                    <a data-animation="am-fade-and-scale" data-placement="center" bs-modal="modal" ng-click="pick(article)">
+                                        <div class="article-pick" ng-switch on ="article.picked">
+                                            <div ng-switch-when="true" class="true">
+                                                <i class="fa fa-thumb-tack fa-rotate-270"></i>
+                                                <div><span>PICK</span></div>
+                                            </div>
+                                            <div ng-switch-default class="false">
+                                                <i class="fa fa-thumb-tack"></i>
+                                                <div><span>PICK</span></div>
+                                            </div>
                                         </div>
                                     </a>
                                 </div>

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.1.63, for debian-linux-gnu (i686)
 --
--- Host: localhost    Database: gamepicks
+-- Host: localhost    Database: mogmog
 -- ------------------------------------------------------
 -- Server version	5.1.63-0ubuntu0.11.10.1-log
 

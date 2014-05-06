@@ -41,7 +41,7 @@ def preview():
     FROM article
     WHERE id = %s
     LIMIT 1
-    """, (article_id))
+    """, [article_id])
     data = cur.fetchall()
     if len(data) == 0: return jsonfy({"res":{}})
     return render_template("preview.html", dev=False, url=data[0]["url"])
@@ -58,13 +58,14 @@ def latest():
     thumbnail
     FROM article
     ORDER BY pubdate DESC
+    LIMIT 30
     """)
     return jsonify({"res": cur.fetchall()})
 
 @app.route("/api/article")
 def article():
     article_id = request.args.get('article_id', None)
-    if not article_id: return jsonfy({"res":{}})
+    if not article_id: return jsonify({"res":{}})
     cur = connect_db()
     cur.execute("""
     SELECT 
@@ -77,7 +78,7 @@ def article():
     url
     FROM article
     WHERE id = %s
-    """, (article_id))
+    """, [article_id])
     data = cur.fetchall()
     if len(data) == 0: return jsonfy({"res":{}})
     return jsonify({"res": data[0]})

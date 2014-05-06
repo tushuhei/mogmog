@@ -1,17 +1,28 @@
 /* App Module */
 
-var gamepicksApp = angular.module('gamepicksApp', [
+var mogmogApp = angular.module('mogmogApp', [
         'ngRoute',
-        'gamepicksControllers',
-        'ui.bootstrap'
+        'mogmogControllers',
+        'ui.bootstrap',
+        'facebook'
         ]);
 
-gamepicksApp.config(['$routeProvider',
+mogmogApp.config(['FacebookProvider', 
+    function(FacebookProvider) {
+        FacebookProvider.init('706563022740412');
+    }
+]);
+
+mogmogApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
         when('/articles', {
             templateUrl: '/static/partial/article-list.html',
             controller: 'ArticleListCtrl'
+        }).
+        when('/pick', {
+            templateUrl: '/static/partial/article-pick.html',
+            controller: 'ArticlePickCtrl'
         }).
         when('/articles/:articleId', {
             templateUrl: '/static/partial/article-detail.html',

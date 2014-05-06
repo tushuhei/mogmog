@@ -1,15 +1,16 @@
 <!doctype html>
-<html ng-app="gamepicksApp">
+<html ng-app="mogmogApp">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>mogmog</title>
         <script src="/static/js/angular.min.js"></script>
         <script src="/static/js/angular-route.min.js"></script>
+        <script src="/static/js/angular-facebook.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
         <script src="/static/js/app.js"></script>
         <script src="/static/js/controller.js"></script>
-        {% if 1 == 1 %}
+        {% if 1 == 2 %}
         <link href="/static/less/base.less" rel="stylesheet/less"/>
         <script src="/static/js/less.min.js"></script>
         {% else %}
@@ -20,61 +21,7 @@
     </head>
     <body>
         <div id="fb-root"></div>
-        <script>
-            function statusChangeCallback(response) {
-                if (response.status === 'connected') {
-                    testAPI();
-                } else if (response.status === 'not_authorized') {
-                    console.log('Please log into this app.');
-                } else {
-                    console.log('Please log into Facebook.');
-                }
-            }
-
-            function checkLoginState() {
-                FB.getLoginStatus(function(response) {
-                    statusChangeCallback(response);
-                });
-            }
-
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId      : '706563022740412',
-                    cookie     : true,
-                    xfbml      : true, 
-                    version    : 'v2.0'
-                });
-                FB.getLoginStatus(function(response) {
-                    statusChangeCallback(response);
-                });
-            };
-
-            (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-
-            function testAPI() {
-                console.log('Welcome!  Fetching your information.... ');
-                FB.api('/me', function(response) {
-                    console.log('Good to see you, ' + response.name + '.');
-                });
-            }
-
-        </script>
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div id="global-navbar" class="container">
-            <h1><a href="#">mogmog</a></h1>
-            <div id="navbar-user">
-                <span id="navbar-user-name" class="hidden-xs">ログイン</span>
-                <img id="navbar-user-pic" class="img-circle" src="//graph.facebook.com/tushuhei/picture?width=80&height=80">
-            </div>
-        </div>
-        </nav>
-        <div ng-view id="view-container"></div>
+        <div id="view-container" ng-view></div>
         <script type="text/javascript"> localStorage.clear();</script>
         <script src="/static/js/jquery-1.11.0.min.js"></script>
         <script src="/static/js/bootstrap.min.js"></script>

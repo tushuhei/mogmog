@@ -5,7 +5,8 @@
 @navbar-default-link-hover-color:          #fff;
 @navbar-default-link-active-color:         #fff;
 @navbar-default-link-disabled-color:       #ccc;
-@navbar-default-bg:                #18284f;
+@maincolor:                #18284f;
+@navbar-default-bg:                @maincolor;
 @brand-info:            #45629e;
 body {
     background-color: @background-body;
@@ -23,18 +24,23 @@ body {
         color: #fff;
     }
 }
-#navbar-user {
+.navbar-user {
+    cursor: pointer;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 0;
+    right: 0;
     color: #fff;
     text-align: right;
-    #navbar-user-pic {
+    padding: 5px;
+    .navbar-user-pic {
         width: 40px;
     }
-    #navbar-user-name {
+    .navbar-user-name {
         margin-right: 3px;
     }
+}
+.navbar-user:hover {
+    background-color: lighten(@navbar-default-bg, 10%);
 }
 .sub-navbar {
     ul {

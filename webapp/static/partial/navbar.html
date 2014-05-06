@@ -1,0 +1,11 @@
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div id="global-navbar" class="container">
+        <h1><a href="#">mogmog</a></h1>
+        <a class="navbar-user" ng-if="fbuser.id">
+            <span class="hidden-xs navbar-user-name">{{ fbuser.name }}</span><img class="img-circle navbar-user-pic" src="//graph.facebook.com/{{ fbuser.id }}/picture?width=80&height=80">
+        </a>
+        <a class="navbar-user" ng-if="!fbuser.id" ng-click="login()">
+            <span class="hidden-xs navbar-user-name">ログイン</span><img class="img-circle navbar-user-pic" src="/static/image/anonymous.png">
+        </a>
+    </div>
+</nav>
