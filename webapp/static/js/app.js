@@ -21,7 +21,7 @@ mogmogApp.config(['$routeProvider',
             controller: 'ArticleListCtrl'
         }).
         when('/pick', {
-            templateUrl: '/static/partial/article-pick.html',
+            templateUrl: '/static/partial/article-list.html',
             controller: 'ArticlePickCtrl'
         }).
         when('/articles/:articleId', {

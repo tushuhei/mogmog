@@ -1,8 +1,8 @@
 <ng-include src="'/static/partial/navbar.html'"></ng-include>
 <div class="container sub-navbar">
     <ul class="row">
-        <a href="#"><li class="col-xs-6 active">タイムライン</li></a>
-        <a href="#"><li class="col-xs-6">ピックリスト ({{ picked.length }})</li></a>
+        <a href="/#/articles"><li class="col-xs-6" ng-class="{'active': page == 'latest'}">タイムライン</li></a>
+        <a href="/#/pick"><li class="col-xs-6" ng-class="{'active': page == 'pick'}">ピンボード ({{ picked.length }})</li></a>
     </ul>
 </div>
 <div id="content-body">
@@ -20,14 +20,14 @@
                                     <div class="article-source">{{ article.source }}</div>
                                     <div class="article-pubdate">{{ article.pubdate }}</div>
                                     <div class="article-people">
-                                        <img src="http://graph.facebook.com/naoya.ishimura/picture"><img src="http://graph.facebook.com/naoya.ishimura/picture"><img src="http://graph.facebook.com/naoya.ishimura/picture">
+                                        <img src="http://graph.facebook.com/{{ user_id }}/picture" ng-repeat="user_id in article.user_ids">
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
                                     <a data-animation="am-fade-and-scale" data-placement="center" bs-modal="modal" ng-click="pick(article)">
                                         <div ng-class="{'pick_on': (picked.indexOf(article.id) > -1)}" class="article-pick">
                                             <i class="fa fa-thumb-tack"></i>
-                                            <div><span class="mog">mog!</span></div>
+                                            <div><span class="mog">pin!</span></div>
                                         </div>
                                     </a>
                                 </div>

@@ -48,6 +48,7 @@ mogmogControllers.controller('BaseCtrl', ['$scope', '$http', 'Facebook',
 mogmogControllers.controller('ArticleListCtrl', ['$scope', '$http', '$modal', '$controller',
     function($scope, $http, $modal, $controller) {
         $controller('BaseCtrl', {$scope: $scope});
+        $scope.page = "latest";
 
         $http({
             url: '/api/latest',
@@ -55,7 +56,6 @@ mogmogControllers.controller('ArticleListCtrl', ['$scope', '$http', '$modal', '$
         }).success(function(data) {
             $scope.articles = data.res;
         });
-
 
         $scope.pick = function(article) {
             if (!$scope.fbuser.id) {
@@ -75,18 +75,48 @@ mogmogControllers.controller('ArticleListCtrl', ['$scope', '$http', '$modal', '$
                     },
                 }).success(function(data) {
                     $scope.picked.push(article.id);
+                    if ($scope.fbuser.id) {
+                        article.user_ids.push($scope.fbuser.id);
+                        console.log(article);
+                    }
                 });
             }
         };
-
     }]
 );
+
+mogmogControllers.controller('ArticlePickCtrl', ['$scope', '$http', '$controller',
+    function($scope, $http, $controller) {
+        $controller('BaseCtrl', {$scope: $scope});
+        $scope.page = "pick";
+        $scope.$watch(function() {
+            return $scope.picked;
+        }, function() {
+            $http({
+                url: '/api/article',
+                method: 'GET',
+                params: {
+                    'article_ids': $scope.picked.join(",")
+                }
+            }).success(function(data) {
+                $scope.articles = data.res;
+            });
+        });
+    }]
+);
+
 
 mogmogControllers.controller('ArticleDetailCtrl', ['$scope', '$routeParams', '$http', '$controller',
     function($scope, $routeParams, $http, $controller) {
         $controller('BaseCtrl', {$scope: $scope});
-        $http.get('/api/article?article_id=' + $routeParams.articleId).success(function(data) {
-            $scope.article = data.res;
+        $http({
+            url: '/api/article',
+            method: 'GET',
+            params: {
+                'article_ids': $routeParams.articleId
+            }
+        }).success(function(data) {
+            $scope.article = data.res[0];
         });
     }]
 );

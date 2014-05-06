@@ -51,37 +51,47 @@ def latest():
     cur = connect_db()
     cur.execute("""
     SELECT 
-    id,
-    title,
-    source,
-    pubdate,
-    thumbnail
-    FROM article
+    a.id,
+    a.title,
+    a.source,
+    a.pubdate,
+    a.thumbnail,
+    GROUP_CONCAT(p.user_id ORDER BY p.updated DESC) AS user_ids
+    FROM article a 
+    LEFT JOIN pick p
+    ON a.id = p.article_id
+    GROUP BY a.id
     ORDER BY pubdate DESC
-    LIMIT 30
+    LIMIT 48
     """)
-    return jsonify({"res": cur.fetchall()})
+    data = cur.fetchall()
+    for datum in data: datum["user_ids"] = [int(x) for x in datum["user_ids"].split(",")] if datum["user_ids"] else []
+    return jsonify({"res": data})
 
 @app.route("/api/article")
 def article():
-    article_id = request.args.get('article_id', None)
-    if not article_id: return jsonify({"res":{}})
+    article_ids = request.args.get('article_ids', None)
+    if not article_ids: return jsonify({"res":{}})
     cur = connect_db()
     cur.execute("""
     SELECT 
-    id,
-    title,
-    description,
-    source,
-    pubdate,
-    thumbnail,
-    url
-    FROM article
-    WHERE id = %s
-    """, [article_id])
+    a.id,
+    a.title,
+    a.description,
+    a.source,
+    a.pubdate,
+    a.thumbnail,
+    a.url,
+    GROUP_CONCAT(p.user_id ORDER BY p.updated DESC) AS user_ids
+    FROM article a
+    LEFT JOIN pick p
+    ON a.id = p.article_id
+    WHERE a.id IN (%s)
+    GROUP BY a.id
+    """%",".join([str(int(x)) for x in article_ids.split(",")]))
     data = cur.fetchall()
-    if len(data) == 0: return jsonfy({"res":{}})
-    return jsonify({"res": data[0]})
+    for datum in data: datum["user_ids"] = [int(x) for x in datum["user_ids"].split(",")] if datum["user_ids"] else []
+    return jsonify({"res": data})
 
 @app.route("/api/pick", methods=['GET', 'POST'])
 def pick():
@@ -89,6 +99,7 @@ def pick():
     if request.method == 'POST':
         article_id = request.args.get('article_id', None)
         user_id = request.args.get('user_id', None)
+        if not user_id: return jsonify({"res": "pass_db"})
         cur.execute("""
         INSERT IGNORE INTO pick
         (article_id, user_id)
