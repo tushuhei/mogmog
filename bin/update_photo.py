@@ -6,6 +6,7 @@ cur = connect_db()
 cur.execute("SELECT id, thumbnail FROM article WHERE thumbnail IS NOT NULL")
 for row in cur.fetchall():
     url = row["thumbnail"]
+    if not url: continue
     try:
         connection = urllib2.urlopen(url)
         print url, connection.getcode()

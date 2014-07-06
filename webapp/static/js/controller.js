@@ -58,6 +58,7 @@ mogmogControllers.controller('ArticleListCtrl', ['$scope', '$http', '$modal', '$
         });
 
         $scope.pick = function(article) {
+            // 未ログインならばログイン画面を表示する
             if (!$scope.fbuser.id) {
                 $modal.open({
                     templateUrl:"/static/partial/login.html", 
@@ -71,14 +72,25 @@ mogmogControllers.controller('ArticleListCtrl', ['$scope', '$http', '$modal', '$
                     method: 'POST',
                     params: {
                         'article_id': article.id,
-                        'user_id': $scope.fbuser.id
+                        'user_id': $scope.fbuser.id,
+                        'hide': 0
                     },
                 }).success(function(data) {
                     $scope.picked.push(article.id);
-                    if ($scope.fbuser.id) {
-                        article.user_ids.push($scope.fbuser.id);
-                        console.log(article);
-                    }
+                    if ($scope.fbuser.id) article.user_ids.push($scope.fbuser.id);
+                });
+            } else {
+                $http({
+                    url: '/api/pick',
+                    method: 'POST',
+                    params: {
+                        'article_id': article.id,
+                        'user_id': $scope.fbuser.id,
+                        'hide': 1
+                    },
+                }).success(function(data) {
+                    $scope.picked.splice($scope.picked.indexOf(article.id), 1);
+                    if ($scope.fbuser.id) article.user_ids.splice(article.user_ids.indexOf($scope.fbuser.id), 1);
                 });
             }
         };

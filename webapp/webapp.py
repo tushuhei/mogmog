@@ -56,7 +56,7 @@ def latest():
     a.source,
     a.pubdate,
     a.thumbnail,
-    GROUP_CONCAT(p.user_id ORDER BY p.updated DESC) AS user_ids
+    GROUP_CONCAT(CONCAT(p.user_id, '_', p.hide) ORDER BY p.updated DESC) AS user_ids
     FROM article a 
     LEFT JOIN pick p
     ON a.id = p.article_id
@@ -65,7 +65,12 @@ def latest():
     LIMIT 48
     """)
     data = cur.fetchall()
-    for datum in data: datum["user_ids"] = [int(x) for x in datum["user_ids"].split(",")] if datum["user_ids"] else []
+    for datum in data:
+        datum['user_ids'] = [
+                int(x.split('_')[0])
+                for x in datum['user_ids'].split(',') 
+                if int(x.split('_')[1]) == 0
+                ] if datum['user_ids'] else []
     return jsonify({"res": data})
 
 @app.route("/api/article")
@@ -88,6 +93,7 @@ def article():
     ON a.id = p.article_id
     WHERE a.id IN (%s)
     GROUP BY a.id
+    ORDER BY p.updated DESC
     """%",".join([str(int(x)) for x in article_ids.split(",")]))
     data = cur.fetchall()
     for datum in data: datum["user_ids"] = [int(x) for x in datum["user_ids"].split(",")] if datum["user_ids"] else []
@@ -99,12 +105,13 @@ def pick():
     if request.method == 'POST':
         article_id = request.args.get('article_id', None)
         user_id = request.args.get('user_id', None)
+        hide = request.args.get('hide', 0)
         if not user_id: return jsonify({"res": "pass_db"})
         cur.execute("""
-        INSERT IGNORE INTO pick
-        (article_id, user_id)
-        VALUES (%s, %s)
-        """, [article_id, user_id])
+        REPLACE INTO pick
+        (article_id, user_id, hide)
+        VALUES (%s, %s, %s)
+        """, [article_id, user_id, int(hide)])
         return jsonify({"res": "ok"})
     else:
         user_id = request.args.get('user_id', None)
@@ -114,7 +121,8 @@ def pick():
         FROM article a
         LEFT JOIN pick p
         ON a.id=p.article_id
-        WHERE p.user_id=%s;
+        WHERE p.user_id=%s AND p.hide=0
+        ORDER BY p.updated DESC;
         """, [user_id])
         data = [x["id"] for x in cur.fetchall()]
         return jsonify({"res": data})

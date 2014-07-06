@@ -1,19 +1,21 @@
 <ng-include src="'/static/partial/navbar.html'"></ng-include>
-<div class="container sub-navbar">
-    <ul class="row">
-        <a href="/#/articles"><li class="col-xs-6" ng-class="{'active': page == 'latest'}">タイムライン</li></a>
-        <a href="/#/pick"><li class="col-xs-6" ng-class="{'active': page == 'pick'}">ピンボード ({{ picked.length }})</li></a>
-    </ul>
+<div class="sub-navbar">
+    <div class="container">
+        <ul class="row">
+            <a href="/#/articles" ng-class="{'active': page == 'latest'}"><li class="col-xs-6">タイムライン</li></a>
+            <a href="/#/pick" ng-class="{'active': page == 'pick'}"><li class="col-xs-6">ピンボード <span class="label label-success">{{ picked.length }}</span></li></a>
+        </ul>
+    </div>
 </div>
 <div id="content-body">
     <div class="container">
         <ul class="row" id="articles">
             <li class="col-sm-6 col-md-4" ng-repeat="article in articles">
-                <a href="/#/articles/{{ article.id }}">
-                    <div class="article">
-                        <div>
-                            <div class="article-thumbnail" style="background-image: url({{ article.thumbnail }})"></div>
-                            <div class="article-title">{{ article.title }}</div>
+            <a href="/#/articles/{{ article.id }}">
+                <div class="article">
+                    <div>
+                        <div class="article-thumbnail" style="background-image: url({{ article.thumbnail }})"></div>
+                        <div class="article-title">{{ article.title }}</div>
                         <div class="article-spec">
                             <div class="row">
                                 <div class="col-xs-9">
@@ -27,17 +29,16 @@
                                     <a data-animation="am-fade-and-scale" data-placement="center" bs-modal="modal" ng-click="pick(article)">
                                         <div ng-class="{'pick_on': (picked.indexOf(article.id) > -1)}" class="article-pick">
                                             <i class="fa fa-thumb-tack"></i>
-                                            <div><span class="mog">pin!</span></div>
+                                            <div><span class="mog">PIN</span></div>
                                         </div>
                                     </a>
                                 </div>
                             </div>
-                            <div class="article-comment">
-                                いまはまだアプリのチューニングなのでなんたらかんたら
-                            </div>
+                            <div class="article-comment">　</div>
                         </div>
                     </div>
-                </a>
+                </div>
+            </a>
             </li>
         </ul>
     </div>
